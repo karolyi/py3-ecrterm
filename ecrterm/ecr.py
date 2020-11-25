@@ -151,7 +151,6 @@ class ECR(object):
             self.transport = SocketTransport(uri=device)
         # This turns on debug logging
         # self.transport.slog = ecr_log
-        self.eod_info = None
         self.daylog = []
         self.daylog_template = ''
         self.history = []
@@ -233,7 +232,6 @@ class ECR(object):
         """
         - sends an end of day packet.
         - saves the log in `daylog`
-        - saves information dictionary in `eod_info`
 
         @returns: 0 if there were no protocol errors.
         """
@@ -249,10 +247,9 @@ class ECR(object):
 
         if not self.daylog:
             # there seems to be no printout. we search in statusinformation.
-            self.eod_info = self._end_of_day_info_packet()
-            # FIXME: The following should not happen inside the library!
+            eod_info = self._end_of_day_info_packet()
             try:
-                self.daylog = (self.daylog_template % self.eod_info).split('\n')
+                self.daylog = (self.daylog_template % eod_info).split('\n')
             except Exception:
                 import traceback
                 traceback.print_exc()
