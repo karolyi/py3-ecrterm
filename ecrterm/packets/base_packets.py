@@ -585,7 +585,7 @@ class PrintLine(Packet):
     def consume_fixed(self, data, length):
         if length:
             self.fixed_values['attribute'] = int(data[0])  # attribute 1 byte
-            self.fixed_values['text'] = ''.join([chr(i) for i in data[1:]])
+            self.fixed_values['text'] = ''.join(bytes([i for i in data[1:]]).decode('cp437'))
             return []
         return []
 
